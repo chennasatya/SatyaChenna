@@ -69,32 +69,21 @@ void process_received_byte(char byte)
 			print("red LED");
 			break;
 
-		// If the character 'C' or 'c' is received, play the note C.
-		case 'C':
-		case 'c':
-			play_from_program_space(PSTR("c16"));
-			print("play note C");
-			break;
-
-		// If the character 'D' or 'd' is received, play the note D.
-		case 'D':
-		case 'd':
-			play_from_program_space(PSTR("d16"));
-			print("play note D");
-			break;
-			
+		//Increase the delay at which LED blinks		
 	   case '+':
-	   
 	   rate=0;
 	   DDRD=0x08;
 	   rate=2000;
+	   print("Inc rate by 2000");
 	   blinkLed();
 	   break;
 	   
+	   //Decrease the delay at which led blinks
 	   case '-':
 	   rate=0;
 	   DDRD=0x08;
 	   rate=-4000;
+	   print("Dec rate by 4000");
 	   blinkLed();
 	   break;
 
