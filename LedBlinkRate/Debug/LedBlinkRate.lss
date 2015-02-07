@@ -591,6 +591,7 @@ int main()
 		if(button)
      300:	81 11       	cpse	r24, r1
 		{
+			//updated with comments
 			checkforbutton(button);
      302:	0e 94 9b 00 	call	0x136	; 0x136 <checkforbutton>
 			
