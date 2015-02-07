@@ -33,6 +33,9 @@ char send_buffer[32];
 //speed at which we need to glow led 
 int long rate=0;
 
+unsigned int elapsedTime=0;
+unsigned int buttonOn=0;
+
 // wait_for_sending_to_finish:  Waits for the bytes in the send buffer to
 // finish transmitting on USB_COMM.  We must call this before modifying
 // send_buffer or trying to send more bytes, because otherwise we could
@@ -69,21 +72,27 @@ void process_received_byte(char byte)
 			print("red LED");
 			break;
 
-		//Increase the delay at which LED blinks		
+		// If the character 'C' or 'c' is received, play the note C.
+		case 'C':
+		case 'c':
+			play_from_program_space(PSTR("c16"));
+			print("play note C");
+			break;
+
+		// If the character 'D' or 'd' is received, play the note D.
+		case 'D':
+		case 'd':
+			play_from_program_space(PSTR("d16"));
+			print("play note D");
+			break;
+			
 	   case '+':
-	   rate=0;
-	   DDRD=0x08;
 	   rate=2000;
-	   print("Inc rate by 2000");
 	   blinkLed();
 	   break;
 	   
-	   //Decrease the delay at which led blinks
 	   case '-':
-	   rate=0;
-	   DDRD=0x08;
-	   rate=-4000;
-	   print("Dec rate by 4000");
+	   rate=-2000;
 	   blinkLed();
 	   break;
 
@@ -119,44 +128,70 @@ void check_for_new_bytes_received()
 	}
 }
 
-void check_for_Button_Press()
+void calculteTime()
 {
-	while(button_is_pressed(TOP_BUTTON | BOTTOM_BUTTON))
+	unsigned int currenttime = get_ms();
+	//clear();
+	//print_long(currenttime);
+	//delay_ms(1000);
+	unsigned int calc = currenttime - elapsedTime ;
+	//delay_ms(1000);
+	//clear();
+	//print_long(calc);
+	if(calc>2000)
 	{
-		//print_long(count);
-		//print("in while");
-		blinkLed();
-		
+		//print("say");
+		print(elapsedTime);
+		print_long(currenttime);
+		PORTD ^= 0x08;
+		elapsedTime = currenttime;
 	}
 	
-	if(!button_is_pressed(TOP_BUTTON | BOTTOM_BUTTON))
+	
+}
+
+void checkforbutton(unsigned char button)
+{
+	switch(button)
 	{
-		PORTD=1>>PORTD3;
-		//print("Buttons released");
+		case BUTTON_C:
+		if(buttonOn==1)
+		{
+			buttonOn=0;
+			PORTD &= ~ 0x08;
+		}
+		
+		else
+		{
+			buttonOn=1;
+		}
+		break;
 	}
 }
 
 void blinkLed()
 {
-	print("in blink light");
-	//unsigned long int currenttime = get_ms();
-	//unsigned long int elapsedTime =currenttime + 1000;
-	////print_long(currenttime);
-	////print_long(elapsedTime);
-	//unsigned long int compareValue =5000;
+	clear();
+	//print("in blink light");
 	PORTD = 1<<PORTD3;
 	delay_ms(5000+rate);
+	//DDRD ^= 0x08;
 	PORTD=1>>PORTD3;
 	delay_ms(5000+rate);
 	rate=0;
+	
 }
+
+
+
+
 int main()
 {
 	clear();	// clear the LCD
 	print("Send serial");
 	lcd_goto_xy(0, 1);	// go to start of second LCD row
 	print("or press B");
-
+	DDRD =0x08;
 	// Set the baud rate to 9600 bits per second.  Each byte takes ten bit
 	// times, so you can get at most 960 bytes per second at this speed.
 	serial_set_baud_rate(USB_COMM, 9600);
@@ -173,10 +208,20 @@ int main()
 
 		// Deal with any new bytes received.
 		check_for_new_bytes_received();
+		unsigned char button = get_single_debounced_button_press(ANY_BUTTON);
 		
-		//Deal with button press
-		check_for_Button_Press();
+		if(button)
+		{
+			checkforbutton(button);
+			
+		}
+		if(buttonOn==1)
+		{
+			calculteTime();
+		}
+		
 				
 
-		}
-    }
+	}
+    
+}
