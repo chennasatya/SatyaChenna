@@ -87,13 +87,14 @@ void process_received_byte(char byte)
 			break;
 			
 	   case '+':
-	   rate=2000;
-	   blinkLed();
+	   rate=200;
+	   //calculteTime();
+	   //blinkLed();
 	   break;
 	   
 	   case '-':
-	   rate=-2000;
-	   blinkLed();
+	   rate=-200;
+	   //blinkLed();
 	   break;
 
 		// If any other character is received, change its capitalization and
@@ -130,15 +131,11 @@ void check_for_new_bytes_received()
 
 void calculteTime()
 {
-	unsigned int currenttime = get_ms();
-	//clear();
-	//print_long(currenttime);
-	//delay_ms(1000);
+	unsigned int currenttime = get_ms() ;
+	
 	unsigned int calc = currenttime - elapsedTime ;
-	//delay_ms(1000);
-	//clear();
-	//print_long(calc);
-	if(calc>2000)
+	
+	if(calc>2000+rate)
 	{
 		//print("say");
 		print(elapsedTime);
