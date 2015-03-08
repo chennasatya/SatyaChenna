@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "MotorLab", "MotorLab.cproj", "{35507404-74AD-488A-9871-87386DB58589}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AVR = Debug|AVR
+		Release|AVR = Release|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35507404-74AD-488A-9871-87386DB58589}.Debug|AVR.ActiveCfg = Debug|AVR
+		{35507404-74AD-488A-9871-87386DB58589}.Debug|AVR.Build.0 = Debug|AVR
+		{35507404-74AD-488A-9871-87386DB58589}.Release|AVR.ActiveCfg = Release|AVR
+		{35507404-74AD-488A-9871-87386DB58589}.Release|AVR.Build.0 = Release|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
